@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 06 2023 г., 09:37
+-- Время создания: Мар 15 2023 г., 18:44
 -- Версия сервера: 5.6.51
 -- Версия PHP: 7.4.30
 
@@ -40,7 +40,10 @@ CREATE TABLE `accounts` (
 
 INSERT INTO `accounts` (`id`, `ownerId`, `balance`, `isClosed`) VALUES
 (1, 2, 0, 0),
-(2, 1, 600, 1);
+(2, 1, 9998, 1),
+(3, 2, 0, 1),
+(4, 2, 0, 0),
+(5, 3, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -64,7 +67,9 @@ CREATE TABLE `operations` (
 INSERT INTO `operations` (`id`, `receiverId`, `senderId`, `amount`, `status`, `date`) VALUES
 (1, 1, 0, 500, 'Incoming', '2023-03-06 06:33:29.000000'),
 (2, 1, 0, 250, 'Incoming', '2023-03-06 06:35:35.000000'),
-(3, 1, 0, 250, 'Withdrawal', '2023-03-06 06:36:09.000000');
+(3, 1, 0, 250, 'Withdrawal', '2023-03-06 06:36:09.000000'),
+(4, 1, 0, 10000, 'Incoming', '2023-03-09 22:58:58.000000'),
+(5, 1, 0, 602, 'Withdrawal', '2023-03-09 22:59:39.000000');
 
 --
 -- Индексы сохранённых таблиц
@@ -90,13 +95,13 @@ ALTER TABLE `operations`
 -- AUTO_INCREMENT для таблицы `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `operations`
 --
 ALTER TABLE `operations`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
