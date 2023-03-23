@@ -11,15 +11,15 @@ use Illuminate\Support\Facades\DB;
 class BankAccountController extends Controller
 {
     public function openBankAccount(Request $request){
-        BankAccount::insert([
+        $id = BankAccount::insertGetId([
             'ownerId' => $request->ownerId,
             'balance'=>0,
             'isClosed'=>0,
         ]);
 
-        return response()->json([
-            'status' => 'success'
-        ]);
+        $accountData = BankAccount::where('id', $id)->first();
+
+        return response()->json($accountData);
     }
 
     public function closeBankAccount(Request $request){
@@ -37,6 +37,15 @@ class BankAccountController extends Controller
             'status' => 'success'
         ]);
     }
+
+    public function bankAccounts(Request $request) {
+        $accounts = BankAccount::where('ownerId', $request->ownerId)->get();
+
+        return response()->json([
+            $accounts,
+        ]);
+    }
+
     public function detailsBankAccount(Request $request){
         $accountData = BankAccount::where('id', $request->id)->first();
         return response()->json([
