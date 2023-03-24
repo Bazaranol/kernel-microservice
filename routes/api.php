@@ -21,8 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('open-bank-account', [\App\Http\Controllers\BankAccountController::class, 'openBankAccount']);
 Route::post('close-bank-account', [\App\Http\Controllers\BankAccountController::class, 'closeBankAccount']);
-Route::get('bank-account-details', [\App\Http\Controllers\BankAccountController::class, 'detailsBankAccount']);
+Route::get('bank-account', [\App\Http\Controllers\BankAccountController::class, 'bankAccount']);
 Route::post('fill-bank-account', [\App\Http\Controllers\BankAccountController::class, 'fillBankAccount']);
 Route::post('withdraw-bank-account', [\App\Http\Controllers\BankAccountController::class, 'withdrawalAccount']);
 Route::get('bank-accounts', [\App\Http\Controllers\BankAccountController::class, 'bankAccounts']);
 
+Route::get('operations-history', [\App\Http\Controllers\OperationsController::class, 'getOperationsHistory']);

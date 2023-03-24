@@ -41,21 +41,16 @@ class BankAccountController extends Controller
     public function bankAccounts(Request $request) {
         $accounts = BankAccount::where('ownerId', $request->ownerId)->get();
 
-        return response()->json([
-            $accounts,
-        ]);
+        return response()->json($accounts);
     }
 
-    public function detailsBankAccount(Request $request){
+    public function bankAccount(Request $request){
         $accountData = BankAccount::where('id', $request->id)->first();
         return response()->json([
-            'status' => 'success',
-            'data' => [
-                'id' => $accountData->id,
-                'ownerId' => $accountData->ownerId,
-                'balance' => $accountData->balance,
-                'isClosed'=> $accountData->isClosed,
-            ]
+            'id' => $accountData->id,
+            'ownerId' => $accountData->ownerId,
+            'balance' => $accountData->balance,
+            'isClosed'=> $accountData->isClosed,
         ]);
     }
 
