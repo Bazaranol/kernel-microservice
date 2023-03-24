@@ -17,9 +17,9 @@ class BankAccountController extends Controller
             'isClosed'=>0,
         ]);
 
-        $accountData = BankAccount::where('id', $id)->first();
-
-        return response()->json($accountData);
+        return response()->json([
+            'id' => $id,
+        ]);
     }
 
     public function closeBankAccount(Request $request){
@@ -67,7 +67,7 @@ class BankAccountController extends Controller
             ]);
 
         Operations::insert([
-            'receiverId' => $data->ownerId,
+            'receiverId' => $request->id,
             'senderId'=> 0,
             'amount'=> $request->money,
             'status' => 'Incoming',
@@ -89,7 +89,7 @@ class BankAccountController extends Controller
                 'balance' => $balance
             ]);
         Operations::insert([
-            'receiverId' => $data->ownerId,
+            'receiverId' => $request->id,
             'senderId'=> 0,
             'amount'=> $request->money,
             'status' => 'Withdrawal',
