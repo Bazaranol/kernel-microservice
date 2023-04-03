@@ -73,6 +73,16 @@ class BankAccountController extends Controller
             'status' => 'Incoming',
             'date' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
+        $dataWS = ['receiverId' => $request->id,
+            'senderId' => 0,
+            'amount' => $request->money,
+            'status' => 'Incoming',
+            'date' => Carbon::now()->format('Y-m-d H:i:s')
+        ];
+        $client = new \WebSocket\Client('ws://192.168.1.43:8080');
+        $client ->text(json_encode($dataWS));
+        $client->receive();
+        $client->close();
         return response()->json([
             'status' => 'success'
         ]);
@@ -95,6 +105,16 @@ class BankAccountController extends Controller
             'status' => 'Withdrawal',
             'date' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
+        $dataWS = ['receiverId' => $request->id,
+            'senderId' => 0,
+            'amount' => $request->money,
+            'status' => 'Withdrawal',
+            'date' => Carbon::now()->format('Y-m-d H:i:s')
+        ];
+        $client = new \WebSocket\Client('ws://192.168.1.43:8080');
+        $client ->text(json_encode($dataWS));
+        $client->receive();
+        $client->close();
         return response()->json([
             'status' => 'success'
         ]);

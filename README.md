@@ -1,3 +1,15 @@
+## Dev:
+
+WS: </br>
+Front: **[Set a websockets](https://learn.javascript.ru/websocket)**
+<br/>Plugins: 
+- **[Simple WebSocket Client (WEB)](https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo/related)**
+- Command for install (backend) <code>composer require textalk/websocket</code> </br>
+## Run
+<code>php artisan serve</code>
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
