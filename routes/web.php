@@ -29,7 +29,7 @@ Route::post('/operations', function (\Illuminate\Http\Request $request) {
         'amount' => $request->input('amount'),
         'status' => $request->input('status'),
         'date' => $request->input('date')];
-    $client = new \WebSocket\Client('ws://192.168.1.43:8080');
+    $client = new \WebSocket\Client('ws://localhost:8080');
     $client ->text(json_encode($data));
     $client->receive();
     $client->close();

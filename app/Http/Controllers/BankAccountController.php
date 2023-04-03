@@ -79,7 +79,7 @@ class BankAccountController extends Controller
             'status' => 'Incoming',
             'date' => Carbon::now()->format('Y-m-d H:i:s')
         ];
-        $client = new \WebSocket\Client('ws://192.168.1.43:8080');
+        $client = new \WebSocket\Client('ws://localhost:8080');
         $client ->text(json_encode($dataWS));
         $client->receive();
         $client->close();
@@ -111,7 +111,7 @@ class BankAccountController extends Controller
             'status' => 'Withdrawal',
             'date' => Carbon::now()->format('Y-m-d H:i:s')
         ];
-        $client = new \WebSocket\Client('ws://192.168.1.43:8080');
+        $client = new \WebSocket\Client('ws://localhost:8080');
         $client ->text(json_encode($dataWS));
         $client->receive();
         $client->close();

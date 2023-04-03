@@ -22,14 +22,16 @@ class Websocket implements MessageComponentInterface {
         echo $msg;
         //msg type { msg_type: 'operations-all', receiverId: 1234 }
         $msg = json_decode($msg);
-        if($msg->msg_type == 'operations-all'){
+        if($msg && property_exists($msg, 'msg_type') && $msg->msg_type == 'operations-all'){
             $test = new OperationsController();
             $history = $test->getOperationsHistory($msg->receiverId);
             foreach ($this->clients as $client) {
                 $client->send(json_encode($history));
             }
-        } else foreach ($this->clients as $client) {
-                $client->send($msg);
+        }
+
+        foreach ($this->clients as $client) {
+            $client->send($msg);
         }
     }
 
