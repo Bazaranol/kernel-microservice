@@ -42,11 +42,18 @@
 
     socket.onopen = function(e) {
         console.log("[open] Соединение установлено");
+        let test = {
+            msg_type: 'operations-all',
+            receiverId: 1
+        }
+        socket.send(JSON.stringify(test));
     };
 
     socket.onmessage = function(event) {
-        document.getElementById('ws').append(event.data);
+        console.log(event.data);
     };
+
+
 
     socket.onclose = function(event) {
         if (event.wasClean) {

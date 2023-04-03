@@ -39,13 +39,16 @@
     socket.onmessage = function(event) {
         var json = JSON.parse(event.data);
         var operations =document.getElementById('operations');
-        var operation = '' + '<div  class="operation">'
-            + '<p>' + json.receiverId + '</p>'
-            + '<p>' + json.senderId + '</p>'
-            + '<p>' + json.amount + '</p>'
-            + '<p>' + json.status + '</p>'
-            + '<p>' + json.date + '</p>'
-            + '</div>'
+        // var operation = '' + '<div  class="operation">'
+        //     + '<p>' + json.receiverId + '</p>'
+        //     + '<p>' + json.senderId + '</p>'
+        //     + '<p>' + json.amount + '</p>'
+        //     + '<p>' + json.status + '</p>'
+        //     + '<p>' + json.date + '</p>'
+        //     + '</div>'
+        var operation = '' + '<div class="operation">' +
+            '<p class="justify-center">'+event.data+'</p>' +
+            '</div>'
         operations.insertAdjacentHTML('beforeend', operation);
     };
 

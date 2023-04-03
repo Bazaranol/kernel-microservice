@@ -14,4 +14,4 @@ Route::post('fill-bank-account', [\App\Http\Controllers\BankAccountController::c
 Route::post('withdraw-bank-account', [\App\Http\Controllers\BankAccountController::class, 'withdrawalAccount']);
 Route::get('bank-accounts', [\App\Http\Controllers\BankAccountController::class, 'bankAccounts']);
 
-Route::get('operations-history', [\App\Http\Controllers\OperationsController::class, 'getOperationsHistory']);
+//Route::get('operations-history', [\App\Http\Controllers\OperationsController::class, 'getOperationsHistory']);

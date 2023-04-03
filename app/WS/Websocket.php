@@ -1,5 +1,6 @@
 <?php
 namespace App\WS;
+use App\Http\Controllers\OperationsController;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
@@ -19,7 +20,15 @@ class Websocket implements MessageComponentInterface {
 
     public function onMessage(ConnectionInterface $from, $msg) {
         echo $msg;
-        foreach ($this->clients as $client) {
+        //msg type { msg_type: 'operations-all', receiverId: 1234 }
+        $msg = json_decode($msg);
+        if($msg->msg_type == 'operations-all'){
+            $test = new OperationsController();
+            $history = $test->getOperationsHistory($msg->receiverId);
+            foreach ($this->clients as $client) {
+                $client->send(json_encode($history));
+            }
+        } else foreach ($this->clients as $client) {
                 $client->send($msg);
         }
     }
