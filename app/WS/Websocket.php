@@ -20,18 +20,20 @@ class Websocket implements MessageComponentInterface {
 
     public function onMessage(ConnectionInterface $from, $msg) {
         echo $msg;
+
         //msg type { msg_type: 'operations-all', receiverId: 1234 }
         $msg_obj = json_decode($msg);
+
         if(property_exists($msg_obj, 'msg_type') && $msg_obj->msg_type == 'operations-all'){
             $test = new OperationsController();
             $history = $test->getOperationsHistory($msg_obj->receiverId);
             foreach ($this->clients as $client) {
                 $client->send(json_encode($history));
             }
-        }
-
-        foreach ($this->clients as $client) {
-            $client->send($msg);
+        } else {
+            foreach ($this->clients as $client) {
+                $client->send($msg);
+            }
         }
     }
 
