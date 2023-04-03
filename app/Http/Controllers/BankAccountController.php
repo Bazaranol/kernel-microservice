@@ -66,23 +66,28 @@ class BankAccountController extends Controller
                 'balance' => $balance
             ]);
 
-        Operations::insert([
+        $id = Operations::insertGetId([
             'receiverId' => $request->id,
             'senderId'=> 0,
             'amount'=> $request->money,
             'status' => 'Incoming',
             'date' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
-        $dataWS = ['receiverId' => $request->id,
+
+        $dataWS = [
+            'id' => $id,
+            'receiverId' => $request->id,
             'senderId' => 0,
             'amount' => $request->money,
             'status' => 'Incoming',
             'date' => Carbon::now()->format('Y-m-d H:i:s')
         ];
+
         $client = new \WebSocket\Client('ws://localhost:8080');
         $client ->text(json_encode($dataWS));
         $client->receive();
         $client->close();
+
         return response()->json([
             'status' => 'success'
         ]);
@@ -91,6 +96,7 @@ class BankAccountController extends Controller
         $validated=$request->validate([
             'money' => 'required'
         ]);
+
         $data = DB::table('accounts')->where('id', $request->id)->first();
         $balance = $data->balance;
         $balance -= $request->money;
@@ -98,23 +104,29 @@ class BankAccountController extends Controller
             ->update([
                 'balance' => $balance
             ]);
-        Operations::insert([
+
+        $id = Operations::insertGetId([
             'receiverId' => $request->id,
             'senderId'=> 0,
             'amount'=> $request->money,
             'status' => 'Withdrawal',
             'date' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
-        $dataWS = ['receiverId' => $request->id,
+
+        $dataWS = [
+            'id' => $id,
+            'receiverId' => $request->id,
             'senderId' => 0,
             'amount' => $request->money,
             'status' => 'Withdrawal',
             'date' => Carbon::now()->format('Y-m-d H:i:s')
         ];
+
         $client = new \WebSocket\Client('ws://localhost:8080');
         $client ->text(json_encode($dataWS));
         $client->receive();
         $client->close();
+
         return response()->json([
             'status' => 'success'
         ]);
