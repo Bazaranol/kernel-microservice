@@ -21,10 +21,10 @@ class Websocket implements MessageComponentInterface {
     public function onMessage(ConnectionInterface $from, $msg) {
         echo $msg;
         //msg type { msg_type: 'operations-all', receiverId: 1234 }
-        $msg = json_decode($msg);
-        if($msg && property_exists($msg, 'msg_type') && $msg->msg_type == 'operations-all'){
+        $msg_obj = json_decode($msg);
+        if(property_exists($msg_obj, 'msg_type') && $msg_obj->msg_type == 'operations-all'){
             $test = new OperationsController();
-            $history = $test->getOperationsHistory($msg->receiverId);
+            $history = $test->getOperationsHistory($msg_obj->receiverId);
             foreach ($this->clients as $client) {
                 $client->send(json_encode($history));
             }
