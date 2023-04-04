@@ -100,6 +100,10 @@ class BankAccountController extends Controller
         $data = DB::table('accounts')->where('id', $request->id)->first();
         $balance = $data->balance;
         $balance -= $request->money;
+        if($balance < 0){
+            return response('Low balance', 400)
+                ->header('Content-Type', 'text/plain');
+        }
         DB::table('accounts')->where('id', $request->id)
             ->update([
                 'balance' => $balance
