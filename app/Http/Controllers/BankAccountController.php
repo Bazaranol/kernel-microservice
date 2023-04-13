@@ -135,4 +135,76 @@ class BankAccountController extends Controller
             'status' => 'success'
         ]);
     }
+    public function sendMoney(Request $request){
+        $validated=$request->validate([
+            'money' => 'required',
+            'receiverId' => 'required'
+        ]);
+
+        $data = DB::table('accounts')->where('id', $request->senderId)->first();
+        $senderBalance = $data->balance;
+        if($senderBalance < $request->money){
+            return response()->json([
+                'status' => 'not enough money'
+            ]);
+        }
+        $senderBalance -= $request->money;
+        DB::table('accounts')->where('id', $request->senderId)
+            ->update([
+                'balance' => $senderBalance
+            ]);
+
+        $dataReceiver = DB::table('accounts')->where('id', $request->receiverId)->first();
+        $receiverBalance = $dataReceiver->balance;
+        $receiverBalance += $request->money;
+        DB::table('accounts')->where('id', $request->receiverId)
+            ->update([
+                'balance' => $receiverBalance
+            ]);
+        $senderId = Operations::insertGetId([
+            'receiverId' => $request->senderId,
+            'senderId'=> $request->receiverId,
+            'amount'=> $request->money,
+            'status' => 'Withdrawal',
+            'date' => Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        $receiverId = Operations::insertGetId([
+            'receiverId' => $request->receiverId,
+            'senderId'=> $request->senderId,
+            'amount'=> $request->money,
+            'status' => 'Incoming',
+            'date' => Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        /**
+         * todo: Плохо отправляются данные, надо одним объектом. Хотя в консоль норм вывело.
+         * (An error has occurred: First parameter must either be an object or the name of an existing class)
+         */
+        $dataWS = [
+            [
+            'id' => $senderId,
+            'receiverId' => $request->senderId,
+            'senderId' => 0,
+            'amount' => $request->money,
+            'status' => 'Incoming',
+            'date' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+            [
+                'id' => $receiverId,
+                'receiverId' => $request->receiverId,
+                'senderId' => 0,
+                'amount' => $request->money,
+                'status' => 'Incoming',
+                'date' => Carbon::now()->format('Y-m-d H:i:s')
+            ]
+        ];
+
+        $client = new \WebSocket\Client('ws://localhost:8080');
+        $client ->text(json_encode($dataWS));
+        $client->receive();
+        $client->close();
+
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

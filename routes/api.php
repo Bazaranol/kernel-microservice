@@ -11,6 +11,7 @@ Route::post('open-bank-account', [\App\Http\Controllers\BankAccountController::c
 Route::post('close-bank-account', [\App\Http\Controllers\BankAccountController::class, 'closeBankAccount']);
 Route::get('bank-account', [\App\Http\Controllers\BankAccountController::class, 'bankAccount']);
 Route::post('fill-bank-account', [\App\Http\Controllers\BankAccountController::class, 'fillBankAccount']);
+Route::post('send-money', [\App\Http\Controllers\BankAccountController::class, 'sendMoney']);
 Route::post('withdraw-bank-account', [\App\Http\Controllers\BankAccountController::class, 'withdrawalAccount']);
 Route::get('bank-accounts', [\App\Http\Controllers\BankAccountController::class, 'bankAccounts']);
 
