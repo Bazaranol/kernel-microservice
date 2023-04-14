@@ -175,31 +175,28 @@ class BankAccountController extends Controller
             'status' => 'Incoming',
             'date' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
-        /**
-         * todo: Плохо отправляются данные, надо одним объектом. Хотя в консоль норм вывело.
-         * (An error has occurred: First parameter must either be an object or the name of an existing class)
-         */
-        $dataWS = [
-            [
+        $senderDataWS = [
             'id' => $senderId,
             'receiverId' => $request->senderId,
-            'senderId' => 0,
+            'senderId' => $request->receiverId,
             'amount' => $request->money,
-            'status' => 'Incoming',
+            'status' => 'Withdrawal',
             'date' => Carbon::now()->format('Y-m-d H:i:s')
-            ],
-            [
+        ];
+        $receiverDataWS = [
                 'id' => $receiverId,
                 'receiverId' => $request->receiverId,
-                'senderId' => 0,
+                'senderId' => $request->senderId,
                 'amount' => $request->money,
                 'status' => 'Incoming',
                 'date' => Carbon::now()->format('Y-m-d H:i:s')
-            ]
         ];
-
         $client = new \WebSocket\Client('ws://localhost:8080');
-        $client ->text(json_encode($dataWS));
+        /**
+         * todo: в сокет передается два сообщения, вместе будет {}{} , не уверен насколько корректно
+         */
+        $client ->text(json_encode($senderDataWS));
+        $client ->text(json_encode($receiverDataWS));
         $client->receive();
         $client->close();
 
