@@ -146,7 +146,7 @@ class BankAccountController extends Controller
         if($senderBalance < $request->money){
             return response()->json([
                 'status' => 'not enough money'
-            ]);
+            ], 400);
         }
         $senderBalance -= $request->money;
         DB::table('accounts')->where('id', $request->senderId)
@@ -192,9 +192,7 @@ class BankAccountController extends Controller
                 'date' => Carbon::now()->format('Y-m-d H:i:s')
         ];
         $client = new \WebSocket\Client('ws://localhost:8080');
-        /**
-         * todo: в сокет передается два сообщения, вместе будет {}{} , не уверен насколько корректно
-         */
+
         $client ->text(json_encode($senderDataWS));
         $client ->text(json_encode($receiverDataWS));
         $client->receive();

@@ -11,7 +11,10 @@ use Illuminate\Support\Facades\DB;
 class OperationsController extends Controller
 {
     public function getOperationsHistory($id){
-        $operations = DB::select('select * from operations where receiverId = :id', ['id' => $id]);
+        $operations = DB::select('select * from operations where receiverId = :id1 or senderId = :id2', [
+            'id1' => $id,
+            'id2' => $id
+        ]);
 
         return $operations;
     }
